@@ -1,4 +1,5 @@
 using GeekShopping.IdentityServer.Configuration;
+using GeekShopping.IdentityServer.Initializer;
 using GeekShopping.IdentityServer.Model;
 using GeekShopping.IdentityServer.Model.Context;
 using Microsoft.AspNetCore.Identity;
@@ -16,6 +17,8 @@ builder.Services.AddDbContext<MySQLContext>(options => options.UseMySql(
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<MySQLContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 builder.Services.AddIdentityServer(options =>
 {
@@ -36,6 +39,7 @@ builder.Services.AddIdentityServer(options =>
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+var dbInitializer = app.Services.CreateScope().ServiceProvider.GetService<IDbInitializer>();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -52,6 +56,7 @@ app.UseRouting();
 
 app.UseIdentityServer();
 app.UseAuthorization();
+dbInitializer.Initialize();
 
 app.MapControllerRoute(
     name: "default",

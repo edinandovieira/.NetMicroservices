@@ -1,7 +1,9 @@
+using Duende.IdentityServer.Services;
 using GeekShopping.IdentityServer.Configuration;
 using GeekShopping.IdentityServer.Initializer;
 using GeekShopping.IdentityServer.Model;
 using GeekShopping.IdentityServer.Model.Context;
+using GeekShopping.IdentityServer.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +21,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 
 builder.Services.AddIdentityServer(options =>
 {
@@ -33,7 +36,9 @@ builder.Services.AddIdentityServer(options =>
     IdentityConfiguration.ApiScopes)
 .AddInMemoryClients(
     IdentityConfiguration.Clients)
-.AddAspNetIdentity<ApplicationUser>().AddDeveloperSigningCredential();
+.AddAspNetIdentity<ApplicationUser>()
+.AddProfileService<ProfileService>()
+.AddDeveloperSigningCredential();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

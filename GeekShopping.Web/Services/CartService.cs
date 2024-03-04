@@ -2,7 +2,6 @@
 using GeekShopping.Web.Services.IServices;
 using GeekShopping.Web.Utils;
 using System.Net.Http.Headers;
-using System.Reflection;
 
 namespace GeekShopping.Web.Services
 {

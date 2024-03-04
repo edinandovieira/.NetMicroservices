@@ -13,8 +13,7 @@ namespace GeekShopping.Web.Controllers
         private readonly IProductService _productService;
         private readonly ICartService _cartService;
 
-        public HomeController(
-            ILogger<HomeController> logger,
+        public HomeController(ILogger<HomeController> logger,
             IProductService productService,
             ICartService cartService)
         {
@@ -64,12 +63,10 @@ namespace GeekShopping.Web.Controllers
             cart.CartDetails = cartDetails;
 
             var response = await _cartService.AddItemToCart(cart, token);
-
             if (response != null)
             {
                 return RedirectToAction(nameof(Index));
             }
-
             return View(model);
         }
 
@@ -90,7 +87,6 @@ namespace GeekShopping.Web.Controllers
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             return RedirectToAction(nameof(Index));
         }
-
         public IActionResult Logout()
         {
             return SignOut("Cookies", "oidc");

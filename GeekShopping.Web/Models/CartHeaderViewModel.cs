@@ -23,6 +23,6 @@
 
         public string CVV { get; set; }
 
-        public string MonthYear { get; set; }
+        public string ExpiryMonthYear { get; set; }
     }
 }
